@@ -1,4 +1,4 @@
-package com.example.pizca_de_sal
+package com.pizcadesal.app
 
 import io.flutter.embedding.android.FlutterActivity
 

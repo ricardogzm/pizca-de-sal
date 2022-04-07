@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.pizca_de_sal">
+    package="com.pizcadesal.app">
    <application
-        android:label="pizca_de_sal"
+        android:label="Pizca de Sal"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/pizca_de_sal">
         <activity
             android:name=".MainActivity"
             android:exported="true"

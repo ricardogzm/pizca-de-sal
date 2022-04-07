@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'src/themes.dart';
+import 'src/providers/theme_provider.dart';
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  runApp(const MyApp());
+Future main() async {
+  await dotenv.load(fileName: ".env");
+
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => ThemeManager()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +21,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Mulish'),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: context.watch<ThemeManager>().currentTheme,
       home: const MyHomePage(title: 'Flutter'),
     );
   }
@@ -44,8 +55,15 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(
           widget.title,
-          style: TextStyle(fontWeight: FontWeight.w800),
+          style: const TextStyle(fontWeight: FontWeight.w800),
         ),
+        actions: [
+          Switch(
+              value: context.watch<ThemeManager>().isDarkTheme,
+              onChanged: (value) {
+                context.read<ThemeManager>().toggleTheme();
+              }),
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -61,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            const Text("Hellooo"),
           ],
         ),
       ),
@@ -68,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

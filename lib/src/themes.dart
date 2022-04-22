@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 const primaryColor = Color(0xFF34D399);
 const shadowColor = Color.fromARGB(122, 129, 190, 160);
@@ -51,17 +52,24 @@ final lightTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(10)),
     ),
   ),
-  appBarTheme: const AppBarTheme(
-    color: Color.fromARGB(0, 0, 0, 0),
+  appBarTheme: AppBarTheme(
+    color: const Color.fromARGB(0, 0, 0, 0),
+    systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: Colors.transparent,
+      systemStatusBarContrastEnforced: true,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarContrastEnforced: false,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
     toolbarHeight: 80,
     elevation: 0,
-    iconTheme: IconThemeData(color: Colors.black),
-    titleTextStyle: TextStyle(
+    iconTheme: const IconThemeData(color: Colors.black),
+    titleTextStyle: const TextStyle(
       color: Colors.black,
       fontSize: 42,
       fontWeight: FontWeight.w800,
     ),
-    toolbarTextStyle: TextStyle(
+    toolbarTextStyle: const TextStyle(
       color: Colors.black,
       fontWeight: FontWeight.w800,
     ),

@@ -23,9 +23,9 @@ final lightTheme = ThemeData(
       textStyle: const TextStyle(
           color: Colors.white,
           fontSize: 20,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
           fontFamily: "Mulish",
-          letterSpacing: 2),
+          letterSpacing: 0),
       elevation: 5,
       shadowColor: shadowColor,
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
@@ -51,6 +51,11 @@ final lightTheme = ThemeData(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(10)),
     ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide:
+          BorderSide(color: Color.fromARGB(255, 203, 213, 225), width: 0.8),
+    ),
   ),
   appBarTheme: AppBarTheme(
     color: const Color.fromARGB(0, 0, 0, 0),
@@ -67,7 +72,7 @@ final lightTheme = ThemeData(
     titleTextStyle: const TextStyle(
       color: Colors.black,
       fontSize: 42,
-      fontWeight: FontWeight.w800,
+      fontWeight: FontWeight.w700,
     ),
     toolbarTextStyle: const TextStyle(
       color: Colors.black,

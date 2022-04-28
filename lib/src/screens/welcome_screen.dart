@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pizca_de_sal/src/widgets/auth_related.dart';
 import 'package:pizca_de_sal/src/widgets/text_between_lines.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -107,31 +107,7 @@ class WelcomeScreen extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: () {},
-              icon: const FaIcon(
-                FontAwesomeIcons.google,
-                color: Colors.green,
-              ),
-              label: const Text("GOOGLE"),
-            ),
-          ),
-          const SizedBox(
-            width: 30,
-          ),
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: () {},
-              icon: const FaIcon(
-                FontAwesomeIcons.facebook,
-                color: Colors.blue,
-              ),
-              label: const Text("FACEBOOK"),
-            ),
-          )
-        ]),
+        const SocialButtons(),
         const SizedBox(
           height: 20,
         ),
@@ -153,24 +129,7 @@ class WelcomeScreen extends StatelessWidget {
           height: 20,
         ),
         const Center(
-          child: Text.rich(
-            TextSpan(
-              text: '¿Ya tienes una cuenta? ',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-              children: [
-                TextSpan(
-                  text: 'Ingresa aquí.',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 16, 185, 129),
-                      decoration: TextDecoration.underline),
-                ),
-              ],
-            ),
-          ),
+          child: ExistentAccountText(),
         ),
       ],
     );

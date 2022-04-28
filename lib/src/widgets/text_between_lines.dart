@@ -4,6 +4,7 @@ class TextBetweenLines extends StatelessWidget {
   final String label;
   final double indent;
   final TextStyle? textStyle;
+  final Color lineColor;
 
   // Implement constructor
   const TextBetweenLines({
@@ -11,6 +12,7 @@ class TextBetweenLines extends StatelessWidget {
     required this.label,
     required this.indent,
     this.textStyle,
+    this.lineColor = Colors.white,
   }) : super(key: key);
 
   @override
@@ -19,14 +21,14 @@ class TextBetweenLines extends StatelessWidget {
       children: [
         Expanded(
             child: Divider(
-          color: Colors.white,
+          color: lineColor,
           endIndent: indent,
         )),
         Text(label,
             style: textStyle ??
                 const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.w500)),
-        Expanded(child: Divider(color: Colors.white, indent: indent)),
+        Expanded(child: Divider(color: lineColor, indent: indent)),
       ],
     );
   }

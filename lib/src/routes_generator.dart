@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pizca_de_sal/src/screens/auth/login.dart';
 import 'screens/auth/signup.dart';
 import 'screens/welcome_screen.dart';
 
@@ -12,6 +13,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const WelcomeScreen());
       case '/signup':
         return MaterialPageRoute(builder: (_) => const SignupScreen());
+      case '/login':
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

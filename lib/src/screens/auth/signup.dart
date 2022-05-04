@@ -26,6 +26,15 @@ class SignupScreen extends StatelessWidget {
             const SignupForm(),
             const SizedBox(height: 40),
             Column(children: [
+              const TextBetweenLines(
+                label: "o ingresa con",
+                indent: 20,
+                textStyle: TextStyle(fontSize: 16, color: Colors.black),
+                lineColor: Colors.black,
+              ),
+              const SizedBox(height: 20),
+              const SocialButtons(),
+              const SizedBox(height: 20),
               Text.rich(
                 TextSpan(
                   text: '¿Ya tienes una cuenta? ',
@@ -47,15 +56,6 @@ class SignupScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
-              const TextBetweenLines(
-                label: "o ingresar con",
-                indent: 20,
-                textStyle: TextStyle(fontSize: 16, color: Colors.black),
-                lineColor: Colors.black,
-              ),
-              const SizedBox(height: 20),
-              const SocialButtons(),
             ])
           ],
         ),
@@ -79,6 +79,18 @@ class _SignupFormState extends State<SignupForm> {
   bool _confirmPasswordVisible = false;
 
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    passwordController.addListener(() {
+      setState(() {});
+    });
+    confirmPasswordController.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   void dispose() {
@@ -91,47 +103,41 @@ class _SignupFormState extends State<SignupForm> {
     return Form(
       key: _formKey,
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: "Nombre completo",
-          ),
-          keyboardType: TextInputType.name,
-          autofillHints: const [AutofillHints.name],
-          validator: InputValidator.nameValidator,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          textCapitalization: TextCapitalization.words,
-        ),
+        nameInput(),
         SizedBox(height: _separation),
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: "Correo electrónico",
-          ),
-          keyboardType: TextInputType.emailAddress,
-          autofillHints: const [AutofillHints.email],
-          validator: InputValidator.emailValidator,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-        ),
+        emailInput(),
         SizedBox(height: _separation),
         passwordInput(),
         SizedBox(height: _separation),
         confirmPasswordInput(),
         SizedBox(height: _separation),
-        ElevatedButton(
-          child: const Text("Registrarse"),
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Registro exitoso")),
-              );
-              // Navigator.of(context).pushNamed('/');
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Error en el registro")),
-              );
-            }
-          },
-        ),
+        signUpButton(context),
       ]),
+    );
+  }
+
+  TextFormField nameInput() {
+    return TextFormField(
+      decoration: const InputDecoration(
+        labelText: "Nombre completo",
+      ),
+      keyboardType: TextInputType.name,
+      autofillHints: const [AutofillHints.name],
+      validator: InputValidator.nameValidator,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      textCapitalization: TextCapitalization.words,
+    );
+  }
+
+  TextFormField emailInput() {
+    return TextFormField(
+      decoration: const InputDecoration(
+        labelText: "Correo electrónico",
+      ),
+      keyboardType: TextInputType.emailAddress,
+      autofillHints: const [AutofillHints.email],
+      validator: InputValidator.emailValidator,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 
@@ -140,21 +146,24 @@ class _SignupFormState extends State<SignupForm> {
       decoration: InputDecoration(
         labelText: "Contraseña",
         errorMaxLines: 2,
-        suffixIcon: Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: IconButton(
-            icon: FaIcon(
-              _passwordVisible
-                  ? FontAwesomeIcons.eyeSlash
-                  : FontAwesomeIcons.eye,
-              size: 20,
+        suffixIcon: Visibility(
+          visible: passwordController.text.isNotEmpty,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: IconButton(
+              icon: FaIcon(
+                _passwordVisible
+                    ? FontAwesomeIcons.eyeSlash
+                    : FontAwesomeIcons.eye,
+                size: 20,
+              ),
+              alignment: Alignment.center,
+              onPressed: () {
+                setState(() {
+                  _passwordVisible = !_passwordVisible;
+                });
+              },
             ),
-            alignment: Alignment.center,
-            onPressed: () {
-              setState(() {
-                _passwordVisible = !_passwordVisible;
-              });
-            },
           ),
         ),
       ),
@@ -172,22 +181,24 @@ class _SignupFormState extends State<SignupForm> {
     return TextFormField(
       decoration: InputDecoration(
         labelText: "Confirmar contraseña",
-        // Add a suffix icon to the password field
-        suffixIcon: Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: IconButton(
-            icon: FaIcon(
-              _confirmPasswordVisible
-                  ? FontAwesomeIcons.eyeSlash
-                  : FontAwesomeIcons.eye,
-              size: 20,
+        suffixIcon: Visibility(
+          visible: confirmPasswordController.text.isNotEmpty,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: IconButton(
+              icon: FaIcon(
+                _confirmPasswordVisible
+                    ? FontAwesomeIcons.eyeSlash
+                    : FontAwesomeIcons.eye,
+                size: 20,
+              ),
+              alignment: Alignment.center,
+              onPressed: () {
+                setState(() {
+                  _confirmPasswordVisible = !_confirmPasswordVisible;
+                });
+              },
             ),
-            alignment: Alignment.center,
-            onPressed: () {
-              setState(() {
-                _confirmPasswordVisible = !_confirmPasswordVisible;
-              });
-            },
           ),
         ),
       ),
@@ -196,6 +207,7 @@ class _SignupFormState extends State<SignupForm> {
       autocorrect: false,
       keyboardType: TextInputType.visiblePassword,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      controller: confirmPasswordController,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return "Confirme su contraseña";
@@ -206,6 +218,23 @@ class _SignupFormState extends State<SignupForm> {
         }
 
         return null;
+      },
+    );
+  }
+
+  ElevatedButton signUpButton(BuildContext context) {
+    return ElevatedButton(
+      child: const Text("Registrarse"),
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Registro exitoso")),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Error en el registro")),
+          );
+        }
       },
     );
   }

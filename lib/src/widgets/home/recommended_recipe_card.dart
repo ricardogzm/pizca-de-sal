@@ -23,7 +23,9 @@ class RecommendedRecipeCard extends StatelessWidget {
       elevation: 2,
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, '/recipeDetails', arguments: recipe);
+        },
         splashColor: Colors.black54.withOpacity(0.3),
         child: Ink(
             width: 220,

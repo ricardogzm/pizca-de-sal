@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pizca_de_sal/src/classes/recipe.dart';
@@ -31,6 +32,23 @@ class SpoonacularApi {
       'number': number.toString(),
       // 'tags': 'vegetarian',
     });
+
+    final List recipes = jsonResponse['recipes'];
+
+    return recipes.map<Recipe>((recipe) {
+      print(recipe['id'].toString() + " | " + recipe['title']);
+      return Recipe.fromJson(recipe);
+    }).toList();
+  }
+
+  // This is for testing purposes
+  // TODO: Remove this
+  static Future<List<Recipe>> localRecipes() async {
+    print("Fetching local recipes");
+    final response = await rootBundle.loadString('assets/random_recipes.json');
+
+    print("Decoding local recipes");
+    final jsonResponse = await json.decode(response);
 
     final List recipes = jsonResponse['recipes'];
 

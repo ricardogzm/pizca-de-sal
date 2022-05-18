@@ -55,7 +55,12 @@ class RecipeDetailsScreen extends StatelessWidget {
           top: 0,
           left: 0,
           right: 0,
-          child: SizedBox(
+          child: Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30))),
+              clipBehavior: Clip.antiAlias,
               height: 300,
               child: Image.network(
                 recipe.imageUrl,
@@ -223,7 +228,7 @@ class OwnIconButton extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
           child: Container(
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.white.withOpacity(0.6),
             child: IconButton(
               icon: const FaIcon(FontAwesomeIcons.chevronLeft),
               color: Colors.black,

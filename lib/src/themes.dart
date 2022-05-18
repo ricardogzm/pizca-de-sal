@@ -2,20 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 const primaryColor = Color(0xFF34D399);
+const primaryColorDark = Color(0xFF059669);
+const primaryColorLight = Color(0xFFd1fae5);
 const shadowColor = Color.fromARGB(122, 129, 190, 160);
+const darkGrey = Color(0xFF1f2937);
+const lightGrey = Color(0xFF4b5563);
 
 final lightTheme = ThemeData(
   fontFamily: "Mulish",
   scaffoldBackgroundColor: Colors.white,
+  primaryColor: primaryColor,
+  primaryColorDark: primaryColorDark,
+  primaryColorLight: primaryColorLight,
   colorScheme: ColorScheme.light(
     primary: primaryColor,
     secondary: Colors.green.shade700,
   ),
   textTheme: const TextTheme(
-    headline1: TextStyle(color: Colors.black),
-    headline2: TextStyle(color: Colors.black),
-    bodyText1: TextStyle(color: Colors.black),
-    bodyText2: TextStyle(color: Colors.black),
+    headline1: TextStyle(
+        color: darkGrey,
+        fontSize: 42,
+        fontWeight: FontWeight.w900,
+        height: 1.0),
+    headline2: TextStyle(
+        color: darkGrey,
+        fontSize: 34,
+        fontWeight: FontWeight.w800,
+        height: 1.0),
+    headline3: TextStyle(
+        color: darkGrey,
+        fontSize: 20,
+        fontWeight: FontWeight.w800,
+        height: 1.0),
+    headline4: TextStyle(
+        color: darkGrey,
+        fontSize: 16,
+        fontWeight: FontWeight.w800,
+        height: 1.0),
+    headline5: TextStyle(
+        color: darkGrey,
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        height: 1.0),
+    headline6:
+        TextStyle(color: lightGrey, fontWeight: FontWeight.w500, fontSize: 14),
+    bodyText1: TextStyle(color: darkGrey, fontSize: 16),
+    bodyText2: TextStyle(color: lightGrey, fontSize: 12),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -66,13 +98,14 @@ final lightTheme = ThemeData(
       systemNavigationBarContrastEnforced: false,
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
-    toolbarHeight: 80,
+    toolbarHeight: 60,
     elevation: 0,
     iconTheme: const IconThemeData(color: Colors.black),
     titleTextStyle: const TextStyle(
-      color: Colors.black,
-      fontSize: 42,
-      fontWeight: FontWeight.w700,
+      color: darkGrey,
+      fontSize: 26,
+      fontWeight: FontWeight.w800,
+      fontFamily: "Mulish",
     ),
     toolbarTextStyle: const TextStyle(
       color: Colors.black,

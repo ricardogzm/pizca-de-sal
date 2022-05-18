@@ -1,9 +1,9 @@
 import 'classes/recipe.dart';
 import 'screens/auth/signup.dart';
 import 'package:flutter/material.dart';
-import 'package:pizca_de_sal/src/screens/home.dart';
 import 'package:pizca_de_sal/src/screens/auth/login.dart';
 import 'package:pizca_de_sal/src/screens/recipe_details.dart';
+import 'package:pizca_de_sal/src/widgets/layout/main_layout.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -12,7 +12,7 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (_) => const MainLayout());
       case '/signup':
         return MaterialPageRoute(builder: (_) => const SignupScreen());
       case '/login':

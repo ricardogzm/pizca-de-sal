@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pizca_de_sal/src/api/spoonacular_api.dart';
+import 'package:pizca_de_sal/src/api/image_detector_api.dart';
 import 'package:pizca_de_sal/src/classes/ingredient.dart';
-import 'package:pizca_de_sal/src/widgets/text_between_lines.dart';
+import 'package:pizca_de_sal/src/api/spoonacular_api.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pizca_de_sal/src/widgets/ui/titled_section.dart';
+import 'package:pizca_de_sal/src/widgets/text_between_lines.dart';
 
 class FindRecipesScreen extends StatefulWidget {
   const FindRecipesScreen({Key? key}) : super(key: key);
@@ -14,19 +18,14 @@ class FindRecipesScreen extends StatefulWidget {
 }
 
 class _FindRecipesScreenState extends State<FindRecipesScreen> {
-  final List<Ingredient> _ingredients = [];
+  List<Ingredient> _ingredients = [];
+  final ImagePicker _imagePicker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Find recipes'),
-          leading: IconButton(
-            iconSize: 20,
-            splashRadius: 20,
-            icon: const FaIcon(FontAwesomeIcons.bars),
-            onPressed: () => {},
-          ),
         ),
         body: ListView(padding: const EdgeInsets.all(16), children: [
           TitledSection(
@@ -41,7 +40,23 @@ class _FindRecipesScreenState extends State<FindRecipesScreen> {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
-              onPressed: () {}, child: const Text('Upload an image')),
+            child: const Text('Upload an image'),
+            onPressed: () async {
+              final image =
+                  await _imagePicker.pickImage(source: ImageSource.gallery);
+
+              if (image == null) return;
+
+              final imageFile = File(image.path);
+
+              final ingredients =
+                  await ImageDetectorApi.processImage(imageFile);
+
+              setState(() {
+                _ingredients = ingredients;
+              });
+            },
+          ),
           const SizedBox(height: 32),
           TitledSection(
             title: 'Selected ingredients',

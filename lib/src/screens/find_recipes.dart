@@ -43,50 +43,44 @@ class _FindRecipesScreenState extends State<FindRecipesScreen> {
           ElevatedButton(
               onPressed: () {}, child: const Text('Upload an image')),
           const SizedBox(height: 32),
-          _selectedIngredientsSection(context)
-        ]));
-  }
+          TitledSection(
+            title: 'Selected ingredients',
+            child: Wrap(
+                spacing: 16,
+                runSpacing: 12,
+                children: _ingredients
+                    .map(
+                        (ingredient) => _ingredientBuilder(context, ingredient))
+                    .toList()),
+          ),
+          const SizedBox(height: 32),
+          ElevatedButton(
+              onPressed: () {
+                if (_ingredients.isNotEmpty) {
+                  final queriedRecipes =
+                      SpoonacularApi.fetchRecipesByIngredients(10,
+                          ingredients: _ingredients);
 
-  TitledSection _selectedIngredientsSection(BuildContext context) {
-    return TitledSection(
-      title: 'Selected ingredients',
-      child: Wrap(
-          spacing: 16,
-          children: _ingredients
-              .map((ingredient) => Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        constraints: const BoxConstraints(
-                            minWidth: 20,
-                            minHeight: 20,
-                            maxWidth: 20,
-                            maxHeight: 20),
-                        padding: const EdgeInsets.all(0),
-                        iconSize: 18,
-                        splashRadius: 20,
-                        icon: const FaIcon(FontAwesomeIcons.xmark),
-                        onPressed: () {
-                          setState(() {
-                            _ingredients.remove(ingredient);
-                          });
-                        },
-                      ),
-                      const SizedBox(width: 4),
-                      Text(ingredient.name,
-                          style: Theme.of(context).textTheme.headline5),
-                    ],
-                  )))
-              .toList()),
-    );
+                  Navigator.pushNamed(context, '/queriedRecipes',
+                      arguments: queriedRecipes);
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: const Text('No ingredients selected'),
+                            content: const Text(
+                                'Please select at least one ingredient'),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () => Navigator.pop(context),
+                              )
+                            ],
+                          ));
+                }
+              },
+              child: const Text('Search recipes')),
+        ]));
   }
 
   TypeAheadField<Ingredient> _ingredientSearchInput() {
@@ -96,11 +90,10 @@ class _FindRecipesScreenState extends State<FindRecipesScreen> {
         minCharsForSuggestions: 3,
         textFieldConfiguration: const TextFieldConfiguration(
             decoration: InputDecoration(
-                labelText: "Type an ingredient...",
                 suffixIcon: Icon(
-                  FontAwesomeIcons.magnifyingGlass,
-                  size: 16,
-                ))),
+          FontAwesomeIcons.magnifyingGlass,
+          size: 16,
+        ))),
         suggestionsBoxDecoration: SuggestionsBoxDecoration(
             borderRadius: BorderRadius.circular(10),
             clipBehavior: Clip.antiAlias,
@@ -136,5 +129,35 @@ class _FindRecipesScreenState extends State<FindRecipesScreen> {
             _ingredients.add(ingredient);
           });
         });
+  }
+
+  Container _ingredientBuilder(BuildContext context, Ingredient ingredient) {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Theme.of(context).primaryColor,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+              constraints: const BoxConstraints(
+                  minWidth: 20, minHeight: 20, maxWidth: 20, maxHeight: 20),
+              padding: const EdgeInsets.all(0),
+              iconSize: 18,
+              splashRadius: 20,
+              icon: const FaIcon(FontAwesomeIcons.xmark),
+              onPressed: () {
+                setState(() {
+                  _ingredients.remove(ingredient);
+                });
+              },
+            ),
+            const SizedBox(width: 4),
+            Text(ingredient.name, style: Theme.of(context).textTheme.headline5),
+          ],
+        ));
   }
 }

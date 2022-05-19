@@ -3,6 +3,7 @@ import 'screens/auth/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:pizca_de_sal/src/screens/auth/login.dart';
 import 'package:pizca_de_sal/src/screens/recipe_details.dart';
+import 'package:pizca_de_sal/src/screens/queried_recipes.dart';
 import 'package:pizca_de_sal/src/widgets/layout/main_layout.dart';
 
 class RouteGenerator {
@@ -21,6 +22,13 @@ class RouteGenerator {
         if (args is Recipe) {
           return MaterialPageRoute(
             builder: (_) => RecipeDetailsScreen(recipe: args),
+          );
+        }
+        return _errorRoute();
+      case '/queriedRecipes':
+        if (args is Future<List<QueriedRecipe>>) {
+          return MaterialPageRoute(
+            builder: (_) => QueriedRecipesScreen(queriedRecipes: args),
           );
         }
         return _errorRoute();

@@ -63,6 +63,37 @@ class SpoonacularApi {
     }).toList();
   }
 
+  static Future<List<QueriedRecipe>> fetchRecipesByIngredients(
+      int resultsNumber,
+      {List<Ingredient>? ingredients,
+      List<String>? stringIngredients}) async {
+    final dynamic jsonResponse;
+
+    if (stringIngredients != null) {
+      jsonResponse = await recipesGet('findByIngredients', {
+        'ingredients': stringIngredients.join(','),
+        'number': resultsNumber.toString(),
+      });
+    } else if (ingredients != null) {
+      jsonResponse = await recipesGet('findByIngredients', {
+        // The ingredients are separated by commas
+        'ingredients':
+            ingredients.map((ingredient) => ingredient.name).join(','),
+        'number': resultsNumber.toString(),
+      });
+    } else {
+      throw Exception('No ingredients provided');
+    }
+
+    final List recipes = jsonResponse;
+
+    print("Queried recipes: " + recipes.length.toString());
+    return recipes.map<QueriedRecipe>((recipe) {
+      print(recipe['id'].toString() + " | " + recipe['title']);
+      return QueriedRecipe.fromJson(recipe);
+    }).toList();
+  }
+
   static Future<List<Ingredient>> autocompleteIngredients(String query) async {
     final jsonResponse = await ingredientsGet('autocomplete', {
       'query': query,
@@ -77,6 +108,16 @@ class SpoonacularApi {
 
       return ing;
     }).toList();
+  }
+
+  static Future<Recipe> fetchRecipeById(int id) async {
+    final jsonResponse = await recipesGet('${id.toString()}/information', {
+      'includeNutrition': "false",
+    });
+
+    final recipe = jsonResponse;
+
+    return Recipe.fromJson(recipe);
   }
 
   // This is for testing purposes

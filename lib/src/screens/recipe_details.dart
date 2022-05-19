@@ -35,7 +35,7 @@ class RecipeDetailsScreen extends StatelessWidget {
                 TitledSection(
                   title: "Ingredients",
                   child:
-                      SizedBox(height: 160, child: _ingredientsList(context)),
+                      SizedBox(height: 180, child: _ingredientsList(context)),
                 ),
                 TitledSection(title: "Steps", child: _stepsList(context)),
               ],
@@ -161,7 +161,9 @@ class RecipeDetailsScreen extends StatelessWidget {
               Text(StringUtils.capitalize(ingredient['name'], allWords: true),
                   style: Theme.of(context).textTheme.headline5),
               Text(
-                ingredient['amount'].toString() + ' ' + ingredient['unit'],
+                ingredient['amount'].toStringAsFixed(2) +
+                    ' ' +
+                    ingredient['unit'],
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ],
